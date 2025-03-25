@@ -15,6 +15,13 @@ public final class BinaryUtil {
             value.write(out);
     }
 
+    public static <T extends ISerializable> void writeArray255(DataOutputStream out, T[] array) throws IOException {
+        out.write(array.length);
+
+        for (T value : array)
+            value.write(out);
+    }
+
     public static <T extends ISerializable> T[] readArray(
             DataInputStream in,
             Function<Integer, T[]> arrCreator,
@@ -22,8 +29,21 @@ public final class BinaryUtil {
     ) throws IOException {
         T[] array = arrCreator.apply(in.readUnsignedShort());
 
-        for (T value : array)
-            value.read(in);
+        for (int i = 0; i < array.length; i++)
+            (array[i] = objCreator.get()).read(in);
+
+        return array;
+    }
+
+    public static <T extends ISerializable> T[] readArray255(
+            DataInputStream in,
+            Function<Integer, T[]> arrCreator,
+            Supplier<T> objCreator
+    ) throws IOException {
+        T[] array = arrCreator.apply(in.readUnsignedByte());
+
+        for (int i = 0; i < array.length; i++)
+            (array[i] = objCreator.get()).read(in);
 
         return array;
     }
