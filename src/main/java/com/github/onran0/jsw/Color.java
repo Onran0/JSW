@@ -1,5 +1,7 @@
 package com.github.onran0.jsw;
 
+import com.github.onran0.jsw.io.ISerializable;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

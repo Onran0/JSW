@@ -1,4 +1,6 @@
-package com.github.onran0.jsw;
+package com.github.onran0.jsw.util;
+
+import com.github.onran0.jsw.io.ISerializable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

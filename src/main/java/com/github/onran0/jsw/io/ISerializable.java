@@ -1,4 +1,4 @@
-package com.github.onran0.jsw;
+package com.github.onran0.jsw.io;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

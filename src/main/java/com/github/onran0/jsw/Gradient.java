@@ -1,5 +1,8 @@
 package com.github.onran0.jsw;
 
+import com.github.onran0.jsw.io.ISerializable;
+import com.github.onran0.jsw.util.BinaryUtil;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
