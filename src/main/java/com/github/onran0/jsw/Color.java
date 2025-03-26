@@ -7,11 +7,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public final class Color implements ISerializable {
-    public byte r, g, b, a;
+    public int r, g, b, a;
 
     public Color() {}
 
-    public Color(byte r, byte g, byte b, byte a) {
+    public Color(int r, int g, int b, int a) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -19,18 +19,18 @@ public final class Color implements ISerializable {
     }
 
     public void setRgba(int rgba) {
-        this.r = (byte) (rgba & 0xFF);
-        this.g = (byte) ((rgba >> 8) & 0xFF);
-        this.b = (byte) ((rgba >> 16) & 0xFF);
-        this.a = (byte) ((rgba >> 24) & 0xFF);
+        this.r = rgba & 0xFF;
+        this.g = (rgba >> 8) & 0xFF;
+        this.b = (rgba >> 16) & 0xFF;
+        this.a = (rgba >> 24) & 0xFF;
     }
 
     public int getRgba() {
-        int result = r & 0xFF;
+        int result = r;
 
-        result |= (b & 0xFF) << 8;
-        result |= (g & 0xFF) << 16;
-        result |= (a & 0xFF) << 24;
+        result |= b << 8;
+        result |= g << 16;
+        result |= a << 24;
 
         return result;
     }
@@ -63,18 +63,18 @@ public final class Color implements ISerializable {
 
     @Override
     public void read(DataInputStream in, int version) throws IOException {
-        this.r = in.readByte();
-        this.g = in.readByte();
-        this.b = in.readByte();
-        this.a = in.readByte();
+        this.r = in.read();
+        this.g = in.read();
+        this.b = in.read();
+        this.a = in.read();
     }
 
     @Override
     public void write(DataOutputStream out, int version) throws IOException {
-        out.writeByte(r);
-        out.writeByte(g);
-        out.writeByte(b);
-        out.writeByte(a);
+        out.write(r);
+        out.write(g);
+        out.write(b);
+        out.write(a);
     }
 
     @Override
