@@ -17,6 +17,25 @@ public final class Vector3 implements ISerializable {
         this.z = z;
     }
 
+    public void set(final float x, final float y, final float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public void set(final Vector3 v) {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj instanceof Vector3 other)
+            return x == other.x && y == other.y && z == other.z;
+        else return false;
+    }
+
     public static Vector3 zero() {
         return new Vector3(0, 0, 0);
     }
@@ -55,6 +74,10 @@ public final class Vector3 implements ISerializable {
 
     public static Vector3 div(final Vector3 a, final float b) {
         return new Vector3(a.x / b, a.y / b, a.z / b);
+    }
+
+    public Vector3 inverse() {
+        return new Vector3(1 / x, 1 / y, 1 / z);
     }
 
     public float length() {

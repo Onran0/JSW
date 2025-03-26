@@ -10,6 +10,24 @@ import java.util.function.Supplier;
 
 public final class BinaryUtil {
 
+    public static int toByte(boolean[] bools) {
+        int b = 0;
+
+        for (int i = 0; i < bools.length; i++)
+            b |= (bools[i] ? 1 : 0) << i;
+
+        return b;
+    }
+
+    public static boolean[] toBools(int b) {
+        boolean[] bools = new boolean[8];
+
+        for (int i = 0; i < bools.length; i++)
+            bools[i] = (b & (1 << i)) != 0;
+
+        return bools;
+    }
+
     public static void writePackedBools255(DataOutputStream out, boolean[] bools) throws IOException {
         out.write(bools.length);
 
@@ -114,11 +132,27 @@ public final class BinaryUtil {
             out.writeFloat(value);
     }
 
-    public static float[] readArray255(DataInputStream in) throws IOException {
+    public static float[] readFloatArray255(DataInputStream in) throws IOException {
         float[] array = new float[in.read()];
 
         for (int i = 0; i < array.length; i++)
             array[i] = in.readFloat();
+
+        return array;
+    }
+
+    public static void writeArray255(DataOutputStream out, int[] array) throws IOException {
+        out.write(array.length);
+
+        for (int value : array)
+            out.writeInt(value);
+    }
+
+    public static int[] readIntArray255(DataInputStream in) throws IOException {
+        int[] array = new int[in.read()];
+
+        for (int i = 0; i < array.length; i++)
+            array[i] = in.readInt();
 
         return array;
     }

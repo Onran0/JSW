@@ -76,4 +76,11 @@ public final class Color implements ISerializable {
         out.writeByte(b);
         out.writeByte(a);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Color other)
+            return other.r == r && other.g == g && other.b == b;
+        else return false;
+    }
 }
