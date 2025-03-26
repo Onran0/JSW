@@ -63,16 +63,6 @@ public final class Color implements ISerializable {
 
     @Override
     public void read(DataInputStream in, int version) throws IOException {
-        read(in);
-    }
-
-    @Override
-    public void write(DataOutputStream out, int version) throws IOException {
-        write(out);
-    }
-
-    @Override
-    public void read(DataInputStream in) throws IOException {
         this.r = in.readByte();
         this.g = in.readByte();
         this.b = in.readByte();
@@ -80,7 +70,7 @@ public final class Color implements ISerializable {
     }
 
     @Override
-    public void write(DataOutputStream out) throws IOException {
+    public void write(DataOutputStream out, int version) throws IOException {
         out.writeByte(r);
         out.writeByte(g);
         out.writeByte(b);

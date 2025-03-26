@@ -17,6 +17,10 @@ public final class Vector3 implements ISerializable {
         this.z = z;
     }
 
+    public static Vector3 zero() {
+        return new Vector3(0, 0, 0);
+    }
+
     public static Vector3 min(Vector3 a, Vector3 b) {
         return new Vector3(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z));
     }
@@ -47,23 +51,13 @@ public final class Vector3 implements ISerializable {
 
     @Override
     public void read(DataInputStream in, int version) throws IOException {
-        read(in);
-    }
-
-    @Override
-    public void write(DataOutputStream out, int version) throws IOException {
-        write(out);
-    }
-
-    @Override
-    public void read(DataInputStream in) throws IOException {
         this.x = in.readFloat();
         this.y = in.readFloat();
         this.z = in.readFloat();
     }
 
     @Override
-    public void write(DataOutputStream out) throws IOException {
+    public void write(DataOutputStream out, int version) throws IOException {
         out.writeFloat(x);
         out.writeFloat(y);
         out.writeFloat(z);
