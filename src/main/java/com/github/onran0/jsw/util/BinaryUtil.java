@@ -106,4 +106,20 @@ public final class BinaryUtil {
 
         return array;
     }
+
+    public static void writeArray255(DataOutputStream out, float[] array) throws IOException {
+        out.write(array.length);
+
+        for (float value : array)
+            out.writeFloat(value);
+    }
+
+    public static float[] readArray255(DataInputStream in) throws IOException {
+        float[] array = new float[in.read()];
+
+        for (int i = 0; i < array.length; i++)
+            array[i] = in.readFloat();
+
+        return array;
+    }
 }
