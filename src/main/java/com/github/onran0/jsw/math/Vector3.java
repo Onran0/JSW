@@ -21,6 +21,10 @@ public final class Vector3 implements ISerializable {
         return new Vector3(0, 0, 0);
     }
 
+    public static Vector3 one() {
+        return new Vector3(1, 1, 1);
+    }
+
     public static Vector3 min(Vector3 a, Vector3 b) {
         return new Vector3(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z));
     }
@@ -41,8 +45,16 @@ public final class Vector3 implements ISerializable {
         return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
     }
 
+    public static Vector3 mul(final Vector3 a, final float b) {
+        return new Vector3(a.x * b, a.y * b, a.z * b);
+    }
+
     public static Vector3 div(final Vector3 a, final Vector3 b) {
         return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
+    }
+
+    public static Vector3 div(final Vector3 a, final float b) {
+        return new Vector3(a.x / b, a.y / b, a.z / b);
     }
 
     public float length() {
