@@ -76,6 +76,9 @@ public final class Root {
         position.write(out, version);
         rotation.write(out, version);
 
+        for (Block block : blocks)
+            bounds.encapsulate(block.position);
+
         bounds.getCenter().write(out, version);
         bounds.getSize().write(out, version);
 
