@@ -19,12 +19,15 @@ public class PictureGenerator {
     public void main() throws Exception {
         BufferedImage image = ImageIO.read(new File("picture.png"));
 
+        int w = image.getWidth();
+        int h = image.getHeight();
+
         Structure structure = new Structure();
 
         Root root = new Root();
 
-        for(int y = 0; y < image.getHeight(); y++) {
-            for(int x = 0; x < image.getWidth(); x++) {
+        for(int y = 0; y < h; y++) {
+            for(int x = 0; x < w; x++) {
                 Block block = new Block();
 
                 block.setId(Blocks.METAL_BLOCK);
@@ -34,7 +37,7 @@ public class PictureGenerator {
 
                 Color color = new Color();
 
-                color.setRgba(image.getRGB(x, y));
+                color.setRgba(image.getRGB(x, h-y));
 
                 block.setColor(color);
 
