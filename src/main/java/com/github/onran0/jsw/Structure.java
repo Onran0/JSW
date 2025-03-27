@@ -6,7 +6,7 @@ import com.github.onran0.jsw.io.ISerializable;
 import com.github.onran0.jsw.math.Vector3;
 import com.github.onran0.jsw.util.HashList;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +24,18 @@ public final class Structure implements ISerializable {
 
     private final HashList<Color> colorsTable = new HashList<>();
     private final HashList<Vector3> rotationsTable = new HashList<>();
+
+    public Structure() { }
+
+    public Structure(InputStream in) throws IOException {
+        this(new LittleEndianDataInputStream(in));
+    }
+
+    public Structure(LittleEndianDataInputStream in) throws IOException {
+        read(in);
+
+        in.close();
+    }
 
     public List<Root> getRoots() {
         return roots;
@@ -47,6 +59,38 @@ public final class Structure implements ISerializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public void read(String filename) throws IOException {
+        read(new File(filename));
+    }
+
+    public void write(String filename) throws IOException {
+        write(new File(filename));
+    }
+
+    public void read(File file) throws IOException {
+        FileInputStream fis = new FileInputStream(file);
+
+        read(fis);
+
+        fis.close();
+    }
+
+    public void write(File file) throws IOException {
+        FileOutputStream out = new FileOutputStream(file);
+
+        write(out);
+
+        out.close();
+    }
+
+    public void read(InputStream in) throws IOException {
+        read(new LittleEndianDataInputStream(in));
+    }
+
+    public void write(OutputStream out) throws IOException {
+        write(new LittleEndianDataOutputStream(out));
     }
 
     public void read(final LittleEndianDataInputStream in) throws IOException {
