@@ -247,7 +247,10 @@ public final class Blocks {
         }
 
         public static Supplier<ISerializable> getBlockCustomMetadata(int id) {
-            return null;
+            return switch (id) {
+                case MATH_BLOCK -> MathBlockMetadata::new;
+                default -> null;
+            };
         }
     }
 }
