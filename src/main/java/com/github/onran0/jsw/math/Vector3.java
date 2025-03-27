@@ -35,6 +35,11 @@ public final class Vector3 implements ISerializable {
         else return false;
     }
 
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ", " + z + ")";
+    }
+
     public static Vector3 zero() {
         return new Vector3(0, 0, 0);
     }

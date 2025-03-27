@@ -9,6 +9,7 @@ import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
@@ -18,9 +19,9 @@ public class BlockMetadata implements ISerializable {
     private float[] sliders;
     private int[][] groups;
     private int[] dropFields;
-    private List<Color> colors;
-    private List<Gradient> gradients;
-    private List<Vector3> vectors;
+    private List<Color> colors = new ArrayList<>();
+    private List<Gradient> gradients = new ArrayList<>();
+    private List<Vector3> vectors = new ArrayList<>();
     private ISerializable customMetadata;
 
     public int[][] getGroups() {
@@ -98,8 +99,9 @@ public class BlockMetadata implements ISerializable {
     }
 
     public void read(LittleEndianDataInputStream in, int id, int version) throws IOException {
+
         ticks = BinaryUtil.readPackedBools255(in);
-        sliders = BinaryUtil.readFloatArray(in);
+        sliders = BinaryUtil.readFloatArray255(in);
 
         boolean custom = Blocks.isCustomBlock(id, version);
 

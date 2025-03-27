@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Root {
-    private Vector3 position, rotation;
+    private Vector3 position = new Vector3(), rotation = new Vector3();
     private Bounds bounds;
     private List<Block> blocks = new ArrayList<>();
     private int blocksCount;
@@ -75,6 +75,8 @@ public final class Root {
     public void write(LittleEndianDataOutputStream out, int blocksCount, int version) throws IOException {
         position.write(out, version);
         rotation.write(out, version);
+
+        bounds = new Bounds(position, Vector3.one());
 
         for (Block block : blocks)
             bounds.encapsulate(block.position);

@@ -115,6 +115,8 @@ public final class Structure implements ISerializable {
             root.read(in, temp, version);
 
             temp += root.getBlocksCount();
+
+            roots.add(root);
         }
 
         int blocksCount = in.readUnsignedShort();

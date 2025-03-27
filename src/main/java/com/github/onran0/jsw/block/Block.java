@@ -7,7 +7,10 @@ import com.github.onran0.jsw.util.BinaryUtil;
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
 
+import javax.sound.midi.Soundbank;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public final class Block {
     public static final float ROTATION_MUL = ( (Short.MAX_VALUE & 0xFFFF) / 360f);
@@ -136,13 +139,13 @@ public final class Block {
         boolean interactable = Blocks.isInteractableBlock(id, version);
 
         if (interactable || bools[7])
-            speed = in.readInt() / (bools[6] ? 1f : 255f);
+            speed = in.read() / (bools[6] ? 1f : 255f); // 0
 
         if(interactable) {
             if (bools[0])
                 name = in.readUTF();
 
-            value = in.read() / 255f;
+            value = in.read() / 255f; // 0
 
             if(!bools[4])
                 bearingBlockId = in.readShort() & 0xFFFF;

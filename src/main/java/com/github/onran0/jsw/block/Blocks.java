@@ -153,19 +153,19 @@ public final class Blocks {
     public static boolean isCustomBlock(int id, int version) {
         checkVersion(version);
 
-        return isCustomMap.get(id).apply(version);
+        return isCustomMap.get(version).apply(id);
     }
 
     public static boolean isInteractableBlock(int id, int version) {
         checkVersion(version);
 
-        return isInteractableMap.get(id).apply(version);
+        return isInteractableMap.get(version).apply(id);
     }
 
     public static Supplier<ISerializable> getBlockCustomMetadata(int id, int version) {
         checkVersion(version);
 
-        return customMetadataMap.get(id).apply(version);
+        return customMetadataMap.get(version).apply(id);
     }
 
     static {
