@@ -7,10 +7,7 @@ import com.github.onran0.jsw.util.BinaryUtil;
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 public final class Block {
     public static final float ROTATION_MUL = ( (Short.MAX_VALUE & 0xFFFF) / 360f);
@@ -21,7 +18,7 @@ public final class Block {
     private String name;
     private float speed;
     private float value;
-    private int bearingBlockId;
+    private int bearingBlockId = -1;
     private int[] connectedOutputs;
     private int[] additionalInts;
     private BlockMetadata metadata;
@@ -204,6 +201,8 @@ public final class Block {
                 speed > 1,
                 speed != 0
         };
+
+        // 00101100
 
         out.write(BinaryUtil.toByte(bools));
 

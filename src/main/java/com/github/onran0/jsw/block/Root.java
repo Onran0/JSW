@@ -45,8 +45,8 @@ public final class Root {
         this.blocks = blocks;
     }
 
-    public int getBlocksCount() {
-        return blocksCount == -1 ? blocks.size() : blocksCount;
+    public int getReadedBlocksCount() {
+        return blocksCount;
     }
 
     public Vector3 getBlockPositionMultiplier() {
@@ -86,6 +86,6 @@ public final class Root {
 
         blockPositionMultiplier = Vector3.mul(bounds.getSize().inverse(), Short.MAX_VALUE);
 
-        out.writeShort((short) (blocksCount + getBlocksCount()));
+        out.writeShort((short) (blocksCount + blocks.size() - 1));
     }
 }

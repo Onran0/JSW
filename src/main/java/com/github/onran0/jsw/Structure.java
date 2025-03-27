@@ -158,7 +158,7 @@ public final class Structure implements ISerializable {
 
             root.read(in, temp, version);
 
-            temp += root.getBlocksCount();
+            temp += root.getReadedBlocksCount();
 
             roots.add(root);
         }
@@ -215,12 +215,12 @@ public final class Structure implements ISerializable {
         boolean rotationsTableDefined = avgRots > (rotationsTable.size() <= 256 ? 1.2f : 1.5f) && rotationsTable.size() < 0xFFFF;
 
         out.write(colorsTableDefined ? colorsTable.size() : 0xFF);
-        out.write(rotationsTableDefined ? rotationsTable.size() : 0xFFFF);
+        out.writeShort((short) (rotationsTableDefined ? rotationsTable.size() : 0xFFFF));
 
         if(colorsTableDefined) {
             for (Color color : colorsTable)
                 color.writeAsBGR565(out);
-        }
+        } else colorsTable.clear();
 
         if(rotationsTableDefined) {
             for (Vector3 rotation : rotationsTable) {
@@ -228,7 +228,7 @@ public final class Structure implements ISerializable {
                 out.writeShort((short) (rotation.y * Block.ROTATION_MUL));
                 out.writeShort((short) (rotation.z * Block.ROTATION_MUL));
             }
-        }
+        } else rotationsTable.clear();
 
         int temp = 0;
 
@@ -237,7 +237,7 @@ public final class Structure implements ISerializable {
         for (Root root : roots) {
             root.write(out, temp, version);
 
-            temp += root.getBlocksCount();
+            temp += root.getBlocks().size();
         }
 
         out.writeShort((short) (blocksCount));
