@@ -133,7 +133,7 @@ public final class Block {
 
         boolean[] bools = BinaryUtil.toBools(in.read());
 
-        boolean interactable = Blocks.isInteractable(id);
+        boolean interactable = Blocks.isInteractableBlock(id, version);
 
         if (interactable || bools[7])
             speed = in.readInt() / (bools[6] ? 1f : 255f);
@@ -204,7 +204,7 @@ public final class Block {
 
         out.write(BinaryUtil.toByte(bools));
 
-        boolean interactable = Blocks.isInteractable(id);
+        boolean interactable = Blocks.isInteractableBlock(id, version);
 
         if (interactable || bools[7])
             out.write((int) (speed * (bools[6] ? 1 : 255)));

@@ -101,7 +101,7 @@ public class BlockMetadata implements ISerializable {
         ticks = BinaryUtil.readPackedBools255(in);
         sliders = BinaryUtil.readFloatArray(in);
 
-        boolean custom = Blocks.isCustomBlock(id);
+        boolean custom = Blocks.isCustomBlock(id, version);
 
         int length = in.read();
 
@@ -157,7 +157,7 @@ public class BlockMetadata implements ISerializable {
         if((mask & 0x80) != 0)
             Collections.addAll(gradients, BinaryUtil.readArray255(in, Gradient[]::new, Gradient::new, version));
 
-        Supplier<ISerializable> customMetadataProvider = Blocks.getBlockCustomMetadata(id);
+        Supplier<ISerializable> customMetadataProvider = Blocks.getBlockCustomMetadata(id, version);
 
         if(customMetadataProvider != null) {
             customMetadata = customMetadataProvider.get();
@@ -170,7 +170,7 @@ public class BlockMetadata implements ISerializable {
         BinaryUtil.writePackedBools255(out, ticks);
         BinaryUtil.writeArray255(out, sliders);
 
-        boolean custom = Blocks.isCustomBlock(id);
+        boolean custom = Blocks.isCustomBlock(id, version);
 
         if(custom) {
             out.write(vectors.size());
