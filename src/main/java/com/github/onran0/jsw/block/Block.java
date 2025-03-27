@@ -4,9 +4,9 @@ import com.github.onran0.jsw.Color;
 import com.github.onran0.jsw.Structure;
 import com.github.onran0.jsw.math.Vector3;
 import com.github.onran0.jsw.util.BinaryUtil;
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 public final class Block {
@@ -108,7 +108,7 @@ public final class Block {
         return (t / size) + offset;
     }
 
-    public void read(DataInputStream in, Root root, Structure struct, int version) throws IOException {
+    public void read(LittleEndianDataInputStream in, Root root, Structure struct, int version) throws IOException {
         Vector3 offset = root.getBounds().getCenter();
         Vector3 size = root.getBlockPositionMultiplier();
 
@@ -170,7 +170,7 @@ public final class Block {
         }
     }
 
-    public void write(DataOutputStream out, Root root, Structure struct, int version) throws IOException {
+    public void write(LittleEndianDataOutputStream out, Root root, Structure struct, int version) throws IOException {
         Vector3 offset = root.getBounds().getCenter();
         Vector3 size = root.getBlockPositionMultiplier();
 

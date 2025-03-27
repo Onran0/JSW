@@ -5,9 +5,9 @@ import com.github.onran0.jsw.Gradient;
 import com.github.onran0.jsw.io.ISerializable;
 import com.github.onran0.jsw.math.Vector3;
 import com.github.onran0.jsw.util.BinaryUtil;
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -80,12 +80,12 @@ public class BlockMetadata implements ISerializable {
     }
 
     @Override
-    public void read(DataInputStream in, int version) throws IOException {
+    public void read(LittleEndianDataInputStream in, int version) throws IOException {
         read(in, 0, version);
     }
 
     @Override
-    public void write(DataOutputStream out, int version) throws IOException {
+    public void write(LittleEndianDataOutputStream out, int version) throws IOException {
         write(out, 0, version);
     }
 
@@ -97,7 +97,7 @@ public class BlockMetadata implements ISerializable {
         return (float) comp / (Short.MAX_VALUE & 0xFFFF) * (maxComp - minComp) + minComp;
     }
 
-    public void read(DataInputStream in, int id, int version) throws IOException {
+    public void read(LittleEndianDataInputStream in, int id, int version) throws IOException {
         ticks = BinaryUtil.readPackedBools255(in);
         sliders = BinaryUtil.readFloatArray(in);
 
@@ -166,7 +166,7 @@ public class BlockMetadata implements ISerializable {
         }
     }
 
-    public void write(DataOutputStream out, int id, int version) throws IOException {
+    public void write(LittleEndianDataOutputStream out, int id, int version) throws IOException {
         BinaryUtil.writePackedBools255(out, ticks);
         BinaryUtil.writeArray255(out, sliders);
 

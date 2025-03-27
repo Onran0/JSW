@@ -6,13 +6,14 @@ import com.github.onran0.jsw.io.ISerializable;
 import com.github.onran0.jsw.math.Vector3;
 import com.github.onran0.jsw.util.HashList;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
 
 public final class Structure implements ISerializable {
     public static final int MAX_SUPPORTED_VERSION = 6;
@@ -48,11 +49,11 @@ public final class Structure implements ISerializable {
         this.version = version;
     }
 
-    public void read(final DataInputStream in) throws IOException {
+    public void read(final LittleEndianDataInputStream in) throws IOException {
         read(in, 0);
     }
 
-    public void write(final DataOutputStream out) throws IOException {
+    public void write(final LittleEndianDataOutputStream out) throws IOException {
         write(out, version);
     }
 
@@ -62,7 +63,7 @@ public final class Structure implements ISerializable {
     }
 
     @Override
-    public void read(DataInputStream in, int version) throws IOException {
+    public void read(LittleEndianDataInputStream in, int version) throws IOException {
         version = in.read();
 
         checkVersion(version);
@@ -73,6 +74,7 @@ public final class Structure implements ISerializable {
         rotationsTable.clear();
 
         int colorCount = in.read();
+
         int rotationCount = in.readUnsignedShort();
 
         if (colorCount != 0xFF) {
@@ -134,7 +136,7 @@ public final class Structure implements ISerializable {
     }
 
     @Override
-    public void write(DataOutputStream out, int version) throws IOException {
+    public void write(LittleEndianDataOutputStream out, int version) throws IOException {
         if(version == -1)
             version = MAX_SUPPORTED_VERSION;
         else

@@ -2,9 +2,9 @@ package com.github.onran0.jsw.block;
 
 import com.github.onran0.jsw.math.Bounds;
 import com.github.onran0.jsw.math.Vector3;
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public final class Root {
         return blockPositionMultiplier;
     }
 
-    public void read(DataInputStream in, int blocksCount, int version) throws IOException {
+    public void read(LittleEndianDataInputStream in, int blocksCount, int version) throws IOException {
         blocks.clear();
 
         position.read(in, version);
@@ -72,7 +72,7 @@ public final class Root {
         this.blocksCount = in.readUnsignedShort() - blocksCount;
     }
 
-    public void write(DataOutputStream out, int blocksCount, int version) throws IOException {
+    public void write(LittleEndianDataOutputStream out, int blocksCount, int version) throws IOException {
         position.write(out, version);
         rotation.write(out, version);
 

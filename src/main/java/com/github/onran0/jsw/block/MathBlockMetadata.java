@@ -2,9 +2,9 @@ package com.github.onran0.jsw.block;
 
 import com.github.onran0.jsw.io.ISerializable;
 import com.github.onran0.jsw.util.StringUtils;
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public final class MathBlockMetadata implements ISerializable {
     }
 
     @Override
-    public void read(DataInputStream in, int version) throws IOException {
+    public void read(LittleEndianDataInputStream in, int version) throws IOException {
         connectionsSlots.clear();
 
         formula = in.readUTF();
@@ -48,7 +48,7 @@ public final class MathBlockMetadata implements ISerializable {
     }
 
     @Override
-    public void write(DataOutputStream out, int version) throws IOException {
+    public void write(LittleEndianDataOutputStream out, int version) throws IOException {
         checkFormula();
 
         out.writeUTF(formula == null ? "" : formula);

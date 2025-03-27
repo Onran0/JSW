@@ -1,9 +1,9 @@
 package com.github.onran0.jsw.util;
 
 import com.github.onran0.jsw.io.ISerializable;
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -28,7 +28,7 @@ public final class BinaryUtil {
         return bools;
     }
 
-    public static void writePackedBools255(DataOutputStream out, boolean[] bools) throws IOException {
+    public static void writePackedBools255(LittleEndianDataOutputStream out, boolean[] bools) throws IOException {
         out.write(bools.length);
 
         int index = 0;
@@ -47,7 +47,7 @@ public final class BinaryUtil {
         }
     }
 
-    public static boolean[] readPackedBools255(DataInputStream in) throws IOException {
+    public static boolean[] readPackedBools255(LittleEndianDataInputStream in) throws IOException {
         boolean[] bools = new boolean[in.read()];
 
         int bytes = (int) Math.ceil(bools.length / 8.0);
@@ -67,14 +67,14 @@ public final class BinaryUtil {
         return bools;
     }
 
-    public static <T extends ISerializable> void writeArray(DataOutputStream out, T[] array, int version) throws IOException {
+    public static <T extends ISerializable> void writeArray(LittleEndianDataOutputStream out, T[] array, int version) throws IOException {
         out.writeShort(array.length);
 
         for (T value : array)
             value.write(out, version);
     }
 
-    public static <T extends ISerializable> void writeArray255(DataOutputStream out, T[] array, int version) throws IOException {
+    public static <T extends ISerializable> void writeArray255(LittleEndianDataOutputStream out, T[] array, int version) throws IOException {
         out.write(array.length);
 
         for (T value : array)
@@ -82,7 +82,7 @@ public final class BinaryUtil {
     }
 
     public static <T extends ISerializable> T[] readArray(
-            DataInputStream in,
+            LittleEndianDataInputStream in,
             Function<Integer, T[]> arrCreator,
             Supplier<T> objCreator,
             int version
@@ -96,7 +96,7 @@ public final class BinaryUtil {
     }
 
     public static <T extends ISerializable> T[] readArray255(
-            DataInputStream in,
+            LittleEndianDataInputStream in,
             Function<Integer, T[]> arrCreator,
             Supplier<T> objCreator,
             int version
@@ -109,14 +109,14 @@ public final class BinaryUtil {
         return array;
     }
 
-    public static void writeArray(DataOutputStream out, float[] array) throws IOException {
+    public static void writeArray(LittleEndianDataOutputStream out, float[] array) throws IOException {
         out.writeShort(array.length);
 
         for (float value : array)
             out.writeFloat(value);
     }
 
-    public static float[] readFloatArray(DataInputStream in) throws IOException {
+    public static float[] readFloatArray(LittleEndianDataInputStream in) throws IOException {
         float[] array = new float[in.readUnsignedShort()];
 
         for (int i = 0; i < array.length; i++)
@@ -125,14 +125,14 @@ public final class BinaryUtil {
         return array;
     }
 
-    public static void writeArray255(DataOutputStream out, float[] array) throws IOException {
+    public static void writeArray255(LittleEndianDataOutputStream out, float[] array) throws IOException {
         out.write(array.length);
 
         for (float value : array)
             out.writeFloat(value);
     }
 
-    public static float[] readFloatArray255(DataInputStream in) throws IOException {
+    public static float[] readFloatArray255(LittleEndianDataInputStream in) throws IOException {
         float[] array = new float[in.read()];
 
         for (int i = 0; i < array.length; i++)
@@ -141,14 +141,14 @@ public final class BinaryUtil {
         return array;
     }
 
-    public static void writeArray255(DataOutputStream out, int[] array) throws IOException {
+    public static void writeArray255(LittleEndianDataOutputStream out, int[] array) throws IOException {
         out.write(array.length);
 
         for (int value : array)
             out.writeInt(value);
     }
 
-    public static int[] readIntArray255(DataInputStream in) throws IOException {
+    public static int[] readIntArray255(LittleEndianDataInputStream in) throws IOException {
         int[] array = new int[in.read()];
 
         for (int i = 0; i < array.length; i++)

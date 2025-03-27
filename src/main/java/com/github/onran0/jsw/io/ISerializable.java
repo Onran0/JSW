@@ -1,12 +1,13 @@
 package com.github.onran0.jsw.io;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
+
 import java.io.IOException;
 
 public interface ISerializable {
 
-    void read(DataInputStream in, int version) throws IOException;
+    void read(LittleEndianDataInputStream in, int version) throws IOException;
 
-    void write(DataOutputStream out, int version) throws IOException;
+    void write(LittleEndianDataOutputStream out, int version) throws IOException;
 }

@@ -1,9 +1,8 @@
 package com.github.onran0.jsw.math;
 
 import com.github.onran0.jsw.io.ISerializable;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
 import java.io.IOException;
 
 public final class Vector3 implements ISerializable {
@@ -85,14 +84,14 @@ public final class Vector3 implements ISerializable {
     }
 
     @Override
-    public void read(DataInputStream in, int version) throws IOException {
+    public void read(LittleEndianDataInputStream in, int version) throws IOException {
         this.x = in.readFloat();
         this.y = in.readFloat();
         this.z = in.readFloat();
     }
 
     @Override
-    public void write(DataOutputStream out, int version) throws IOException {
+    public void write(LittleEndianDataOutputStream out, int version) throws IOException {
         out.writeFloat(x);
         out.writeFloat(y);
         out.writeFloat(z);

@@ -1,9 +1,8 @@
 package com.github.onran0.jsw;
 
 import com.github.onran0.jsw.io.ISerializable;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import com.google.common.io.LittleEndianDataInputStream;
+import com.google.common.io.LittleEndianDataOutputStream;
 import java.io.IOException;
 
 public final class Color implements ISerializable {
@@ -53,16 +52,16 @@ public final class Color implements ISerializable {
         return r | g | b;
     }
 
-    public void readAsBGR565(DataInputStream in) throws IOException {
+    public void readAsBGR565(LittleEndianDataInputStream in) throws IOException {
         setRgba(bgr565ToRgb888(in.readShort()));
     }
 
-    public void writeAsBGR565(DataOutputStream out) throws IOException {
+    public void writeAsBGR565(LittleEndianDataOutputStream out) throws IOException {
         out.writeShort(rgb888ToBgr565(getRgba()));
     }
 
     @Override
-    public void read(DataInputStream in, int version) throws IOException {
+    public void read(LittleEndianDataInputStream in, int version) throws IOException {
         this.r = in.read();
         this.g = in.read();
         this.b = in.read();
@@ -70,7 +69,7 @@ public final class Color implements ISerializable {
     }
 
     @Override
-    public void write(DataOutputStream out, int version) throws IOException {
+    public void write(LittleEndianDataOutputStream out, int version) throws IOException {
         out.write(r);
         out.write(g);
         out.write(b);
