@@ -223,7 +223,7 @@ public final class Block {
 
         boolean[] bools = {
                 name != null && !name.isEmpty(),
-                connectedOutputsIds != null && connectedOutputsIds.length > 0,
+                connectedOutputs != null && connectedOutputs.size() > 0,
                 metadata == null,
                 color == null,
                 bearingBlockId == -1,
