@@ -53,6 +53,10 @@ public final class Root {
         return blockPositionMultiplier;
     }
 
+    public int getBlockId(Block block) {
+        return blocks.indexOf(block);
+    }
+
     public void read(LittleEndianDataInputStream in, int blocksCount, int version) throws IOException {
         blocks.clear();
 

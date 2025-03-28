@@ -8,6 +8,8 @@ import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Block {
     public static final float ROTATION_MUL = ( (Short.MAX_VALUE & 0xFFFF) / 360f);
@@ -19,10 +21,11 @@ public final class Block {
     private float speed;
     private float value;
     private int bearingBlockId = -1;
-    private int[] connectedOutputs;
+    private int[] connectedOutputsIds;
     private int[] additionalInts;
     private BlockMetadata metadata;
     private Color color;
+    private List<Block> connectedOutputs = new ArrayList<>();
 
     public int rotationId, colorId;
 
@@ -66,11 +69,32 @@ public final class Block {
         this.bearingBlockId = bearingBlockId;
     }
 
-    public int[] getConnectedOutputs() {
+    public List<Block> getConnectedOutputs() {
         return connectedOutputs;
     }
 
-    public void setConnectedOutputs(int[] connectedOutputs) {
+    public void connectOutput(Block output) {
+        connectedOutputs.add(output);
+    }
+
+    private void throwBlockNotFound(int id) throws IOException {
+        throw new IOException("Block with id " + id + " not found");
+    }
+
+    public void setupConnectedOutputs(Structure struct) throws IOException {
+        connectedOutputs.clear();
+
+        for (int id : connectedOutputsIds) {
+            Block block = struct.getBlock(id);
+
+            if (block == null)
+                throwBlockNotFound(id);
+
+            connectedOutputs.add(block);
+        }
+    }
+
+    public void setConnectedOutputs(List<Block> connectedOutputs) {
         this.connectedOutputs = connectedOutputs;
     }
 
@@ -88,6 +112,12 @@ public final class Block {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public void setColor(int rgba) {
+        this.color = new Color();
+
+        color.setRgba(rgba);
     }
 
     public BlockMetadata getMetadata() {
@@ -148,10 +178,10 @@ public final class Block {
                 bearingBlockId = in.readShort() & 0xFFFF;
 
             if(bools[1]) {
-                connectedOutputs = new int[in.read()];
+                connectedOutputsIds = new int[in.read()];
 
-                for (int i = 0; i < connectedOutputs.length; i++)
-                    connectedOutputs[i] = in.readShort() & 0xFFFF;
+                for (int i = 0; i < connectedOutputsIds.length; i++)
+                    connectedOutputsIds[i] = in.readShort() & 0xFFFF;
             }
 
             if (!bools[5])
@@ -193,7 +223,7 @@ public final class Block {
 
         boolean[] bools = {
                 name != null && !name.isEmpty(),
-                connectedOutputs != null && connectedOutputs.length > 0,
+                connectedOutputsIds != null && connectedOutputsIds.length > 0,
                 metadata == null,
                 color == null,
                 bearingBlockId == -1,
@@ -221,10 +251,16 @@ public final class Block {
                 out.writeShort((short) bearingBlockId);
 
             if(bools[1]) {
-                out.write(connectedOutputs.length);
+                out.write(connectedOutputs.size());
 
-                for(int id : connectedOutputs)
+                for(Block block : connectedOutputs) {
+                    int id = struct.getBlockId(block);
+
+                    if(id == -1)
+                        throwBlockNotFound(id);
+
                     out.writeShort((short) id);
+                }
             }
 
             if (bools[5])

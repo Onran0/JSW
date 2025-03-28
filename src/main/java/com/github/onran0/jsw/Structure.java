@@ -61,6 +61,34 @@ public final class Structure implements ISerializable {
         this.version = version;
     }
 
+    public int getBlockId(Block block) {
+        int blocksCount = 0;
+
+        for(Root root : roots) {
+            int idInRoot = root.getBlockId(block);
+
+            if(idInRoot != -1) {
+                return blocksCount + idInRoot;
+            }
+
+            blocksCount += root.getBlocks().size();
+        }
+
+        return -1;
+    }
+
+    public Block getBlock(int id) {
+        for(Root root : roots) {
+            int size = root.getBlocks().size();
+
+            if(id < size)
+                return root.getBlocks().get(id);
+            else id -= size;
+        }
+
+        return null;
+    }
+
     public void read(String filename) throws IOException {
         read(new File(filename));
     }
@@ -178,6 +206,11 @@ public final class Structure implements ISerializable {
             block.read(in, root, this, version);
 
             root.getBlocks().add(block);
+        }
+
+        for (Root r : roots) {
+            for (Block block : r.getBlocks())
+                block.setupConnectedOutputs(this);
         }
     }
 
