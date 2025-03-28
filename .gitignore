@@ -1,3 +1,5 @@
+bad_apple/
+Bad Apple Video Player.structure
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
