@@ -84,13 +84,15 @@ public final class Block {
     public void setupConnectedOutputs(Structure struct) throws IOException {
         connectedOutputs.clear();
 
-        for (int id : connectedOutputsIds) {
-            Block block = struct.getBlock(id);
+        if(connectedOutputsIds != null) {
+            for (int id : connectedOutputsIds) {
+                Block block = struct.getBlock(id);
 
-            if (block == null)
-                throwBlockNotFound(id);
+                if (block == null)
+                    throwBlockNotFound(id);
 
-            connectedOutputs.add(block);
+                connectedOutputs.add(block);
+            }
         }
     }
 
@@ -166,13 +168,13 @@ public final class Block {
         boolean interactable = Blocks.isInteractableBlock(id, version);
 
         if (interactable || bools[7])
-            speed = in.read() / (bools[6] ? 1f : 255f); // 0
+            speed = in.read() / (bools[6] ? 1f : 255f);
 
         if(interactable) {
             if (bools[0])
                 name = in.readUTF();
 
-            value = in.read() / 255f; // 0
+            value = in.read() / 255f;
 
             if(!bools[4])
                 bearingBlockId = in.readShort() & 0xFFFF;
@@ -223,7 +225,7 @@ public final class Block {
 
         boolean[] bools = {
                 name != null && !name.isEmpty(),
-                connectedOutputs != null && connectedOutputs.size() > 0,
+                connectedOutputs != null && !connectedOutputs.isEmpty(),
                 metadata == null,
                 color == null,
                 bearingBlockId == -1,
@@ -231,8 +233,6 @@ public final class Block {
                 speed > 1,
                 speed != 0
         };
-
-        // 00101100
 
         out.write(BinaryUtil.toByte(bools));
 
