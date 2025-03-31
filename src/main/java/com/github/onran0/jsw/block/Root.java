@@ -97,7 +97,7 @@ public final class Root {
         bounds = new Bounds(position, Vector3.one());
 
         for (Block block : blocks)
-            bounds.encapsulate(block.position);
+            bounds.encapsulate(block.getPosition());
 
         bounds.getCenter().write(out, version);
         bounds.getSize().write(out, version);

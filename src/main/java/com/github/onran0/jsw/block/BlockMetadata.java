@@ -197,16 +197,16 @@ public class BlockMetadata implements ISerializable {
                     maxVec = Vector3.max(maxVec, vec);
                 }
 
-                byte min = (byte) Math.floor(Math.min(Math.min(minVec.x, minVec.y), minVec.z));
-                byte max = (byte) Math.ceil(Math.max(Math.max(maxVec.x, maxVec.y), maxVec.z));
+                byte min = (byte) Math.floor(Math.min(Math.min(minVec.getX(), minVec.getY()), minVec.getZ()));
+                byte max = (byte) Math.ceil(Math.max(Math.max(maxVec.getX(), maxVec.getY()), maxVec.getZ()));
 
                 out.writeByte(min);
                 out.writeByte(max);
 
                 for (Vector3 vec : vectors) {
-                    out.writeFloat(encodeComponent(vec.x, min, max));
-                    out.writeFloat(encodeComponent(vec.y, min, max));
-                    out.writeFloat(encodeComponent(vec.z, min, max));
+                    out.writeFloat(encodeComponent(vec.getX(), min, max));
+                    out.writeFloat(encodeComponent(vec.getY(), min, max));
+                    out.writeFloat(encodeComponent(vec.getZ(), min, max));
                 }
             }
         }

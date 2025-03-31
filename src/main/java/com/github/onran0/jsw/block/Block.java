@@ -14,8 +14,8 @@ import java.util.List;
 public final class Block {
     public static final float ROTATION_MUL = ( (Short.MAX_VALUE & 0xFFFF) / 360f);
 
-    public final Vector3 position = Vector3.zero();
-    public final Vector3 rotation = Vector3.zero();
+    private final Vector3 position = Vector3.zero();
+    private final Vector3 rotation = Vector3.zero();
     private int id;
     private String name;
     private float speed;
@@ -27,6 +27,14 @@ public final class Block {
     private Color color;
     private Block bearingBlock;
     private List<Block> connectedOutputs = new ArrayList<>();
+
+    public Vector3 getPosition() {
+        return position;
+    }
+
+    public Vector3 getRotation() {
+        return rotation;
+    }
 
     public int rotationId, colorId;
 
@@ -158,9 +166,9 @@ public final class Block {
         Vector3 offset = root.getBounds().getCenter();
         Vector3 size = root.getBlockPositionMultiplier();
 
-        position.x = decodePositionComponent(in.readShort(), offset.x, size.x);
-        position.y = decodePositionComponent(in.readShort(), offset.y, size.y);
-        position.z = decodePositionComponent(in.readShort(), offset.z, size.z);
+        getPosition().setX(decodePositionComponent(in.readShort(), offset.getX(), size.getX()));
+        getPosition().setY(decodePositionComponent(in.readShort(), offset.getY(), size.getY()));
+        getPosition().setZ(decodePositionComponent(in.readShort(), offset.getZ(), size.getZ()));
 
         if(!struct.getRotationsTable().isEmpty()) {
             if(struct.getRotationsTable().size() <= 255)
@@ -168,11 +176,11 @@ public final class Block {
             else
                 rotationId = in.readShort() & 0xFFFF;
 
-            rotation.set(struct.getRotationsTable().get(rotationId));
+            getRotation().set(struct.getRotationsTable().get(rotationId));
         } else {
-            rotation.x = (in.readShort() & 0xFFFF) / ROTATION_MUL;
-            rotation.y = (in.readShort() & 0xFFFF) / ROTATION_MUL;
-            rotation.z = (in.readShort() & 0xFFFF) / ROTATION_MUL;
+            getRotation().setX((in.readShort() & 0xFFFF) / ROTATION_MUL);
+            getRotation().setY((in.readShort() & 0xFFFF) / ROTATION_MUL);
+            getRotation().setZ((in.readShort() & 0xFFFF) / ROTATION_MUL);
         }
 
         id = in.read();
@@ -222,9 +230,9 @@ public final class Block {
         Vector3 offset = root.getBounds().getCenter();
         Vector3 size = root.getBlockPositionMultiplier();
 
-        out.writeShort(encodePositionComponent(position.x, offset.x, size.x));
-        out.writeShort(encodePositionComponent(position.y, offset.y, size.y));
-        out.writeShort(encodePositionComponent(position.z, offset.z, size.z));
+        out.writeShort(encodePositionComponent(getPosition().getX(), offset.getX(), size.getX()));
+        out.writeShort(encodePositionComponent(getPosition().getY(), offset.getY(), size.getY()));
+        out.writeShort(encodePositionComponent(getPosition().getZ(), offset.getZ(), size.getZ()));
 
         if(!struct.getRotationsTable().isEmpty()) {
             if(struct.getRotationsTable().size() <= 255)
@@ -232,9 +240,9 @@ public final class Block {
             else
                 out.writeShort((short) rotationId);
         } else {
-            out.writeShort((short) (rotation.x * ROTATION_MUL));
-            out.writeShort((short) (rotation.y * ROTATION_MUL));
-            out.writeShort((short) (rotation.z * ROTATION_MUL));
+            out.writeShort((short) (getRotation().getX() * ROTATION_MUL));
+            out.writeShort((short) (getRotation().getY() * ROTATION_MUL));
+            out.writeShort((short) (getRotation().getZ() * ROTATION_MUL));
         }
 
         out.write(id);

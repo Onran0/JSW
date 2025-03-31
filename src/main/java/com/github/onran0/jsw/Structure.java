@@ -179,9 +179,9 @@ public final class Structure implements ISerializable {
             for (int i = 0; i < rotationCount; i++) {
                 Vector3 rotation = new Vector3();
 
-                rotation.x = in.readUnsignedShort() / Block.ROTATION_MUL;
-                rotation.y = in.readUnsignedShort() / Block.ROTATION_MUL;
-                rotation.z = in.readUnsignedShort() / Block.ROTATION_MUL;
+                rotation.setX(in.readUnsignedShort() / Block.ROTATION_MUL);
+                rotation.setY(in.readUnsignedShort() / Block.ROTATION_MUL);
+                rotation.setZ(in.readUnsignedShort() / Block.ROTATION_MUL);
 
                 rotationsTable.add(rotation);
             }
@@ -246,7 +246,7 @@ public final class Structure implements ISerializable {
             for(Block block : root.getBlocks()) {
                 blocksCount++;
 
-                block.rotationId = rotationsTable.addOrGetIndex(block.rotation);
+                block.rotationId = rotationsTable.addOrGetIndex(block.getRotation());
 
                 if(block.getColor() == null)
                     continue;
@@ -273,9 +273,9 @@ public final class Structure implements ISerializable {
 
         if(rotationsTableDefined) {
             for (Vector3 rotation : rotationsTable) {
-                out.writeShort((short) (rotation.x * Block.ROTATION_MUL));
-                out.writeShort((short) (rotation.y * Block.ROTATION_MUL));
-                out.writeShort((short) (rotation.z * Block.ROTATION_MUL));
+                out.writeShort((short) (rotation.getX() * Block.ROTATION_MUL));
+                out.writeShort((short) (rotation.getY() * Block.ROTATION_MUL));
+                out.writeShort((short) (rotation.getZ() * Block.ROTATION_MUL));
             }
         } else rotationsTable.clear();
 

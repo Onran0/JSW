@@ -4,14 +4,12 @@ import com.github.onran0.jsw.Color;
 import com.github.onran0.jsw.Structure;
 import com.github.onran0.jsw.block.Block;
 import com.github.onran0.jsw.block.Blocks;
-import com.github.onran0.jsw.block.MathBlockMetadata;
 import com.github.onran0.jsw.block.Root;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 
 public class PictureGenerator {
 
@@ -32,8 +30,8 @@ public class PictureGenerator {
 
                 block.setId(Blocks.METAL_BLOCK);
 
-                block.position.x = x;
-                block.position.y = y;
+                block.getPosition().setX(x);
+                block.getPosition().setY(y);
 
                 Color color = new Color();
 

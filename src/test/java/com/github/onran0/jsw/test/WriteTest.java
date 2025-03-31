@@ -1,15 +1,10 @@
 package com.github.onran0.jsw.test;
 
-import com.github.onran0.jsw.Color;
 import com.github.onran0.jsw.Structure;
 import com.github.onran0.jsw.block.Block;
 import com.github.onran0.jsw.block.Blocks;
 import com.github.onran0.jsw.block.Root;
 import org.junit.Test;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class WriteTest {
 
@@ -22,7 +17,7 @@ public class WriteTest {
         Block in = new Block();
 
         in.setId(Blocks.AND);
-        in.position.y++;
+        in.getPosition().setY(in.getPosition().getY() + 1);
 
         for(int i = 0;i < 150;i++) {
             Block block = new Block();
@@ -40,7 +35,7 @@ public class WriteTest {
 
         t.setId(Blocks.MONITOR);
 
-        t.position.y += 2;
+        t.getPosition().setY(t.getPosition().getY() + 2);
 
         root.getBlocks().add(t);
 
