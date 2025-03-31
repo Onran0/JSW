@@ -19,16 +19,33 @@ public class WriteTest {
 
         Root root = new Root();
 
-        Block a = new Block();
-        Block b = new Block();
+        Block in = new Block();
 
-        b.position.y++;
+        in.setId(Blocks.AND);
+        in.position.y++;
 
-        root.getBlocks().add(a);
-        root.getBlocks().add(b);
+        for(int i = 0;i < 150;i++) {
+            Block block = new Block();
+
+            block.setId(Blocks.HEAVY_GUN);
+
+            in.connectOutput(block);
+
+            root.getBlocks().add(block);
+        }
+
+        root.getBlocks().add(in);
+
+        Block t = new Block();
+
+        t.setId(Blocks.MONITOR);
+
+        t.position.y += 2;
+
+        root.getBlocks().add(t);
 
         structure.getRoots().add(root);
 
-        structure.write("wt.structure");
+        structure.write("a.structure");
     }
 }
