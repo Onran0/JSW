@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
@@ -77,13 +78,28 @@ public final class Structure implements ISerializable {
         return -1;
     }
 
-    public Block getBlock(int id) {
+    public Block getBlockById(int id) {
         for(Root root : roots) {
             int size = root.getBlocks().size();
 
             if(id < size)
                 return root.getBlocks().get(id);
             else id -= size;
+        }
+
+        return null;
+    }
+
+    public Block getBlockByName(String name) {
+        return findBlock(x -> name.equals(x.getName()));
+    }
+
+    public Block findBlock(Predicate<Block> predicate) {
+        for(Root root : roots) {
+            Block block = root.findBlock(predicate);
+
+            if (block != null)
+                return block;
         }
 
         return null;
@@ -210,7 +226,7 @@ public final class Structure implements ISerializable {
 
         for (Root r : roots) {
             for (Block block : r.getBlocks())
-                block.setupConnectedOutputs(this);
+                block.postBlocksRead(this);
         }
     }
 

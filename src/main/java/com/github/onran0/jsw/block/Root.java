@@ -8,6 +8,7 @@ import com.google.common.io.LittleEndianDataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public final class Root {
     private Vector3 position = new Vector3(), rotation = new Vector3();
@@ -55,6 +56,19 @@ public final class Root {
 
     public int getBlockId(Block block) {
         return blocks.indexOf(block);
+    }
+
+    public Block getBlockByName(final String name) {
+        return findBlock(x -> name.equals(x.getName()));
+    }
+
+    public Block findBlock(Predicate<Block> predicate) {
+        for (Block block : blocks) {
+            if (predicate.test(block))
+                return block;
+        }
+
+        return null;
     }
 
     public void read(LittleEndianDataInputStream in, int blocksCount, int version) throws IOException {
