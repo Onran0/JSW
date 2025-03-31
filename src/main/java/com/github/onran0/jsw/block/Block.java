@@ -263,7 +263,7 @@ public final class Block {
                 }
             }
 
-            if (bools[5])
+            if (!bools[5])
                 BinaryUtil.writeArray255(out, additionalInts);
 
             if(!bools[2])
