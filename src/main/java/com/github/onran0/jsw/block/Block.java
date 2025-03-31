@@ -28,6 +28,12 @@ public final class Block {
     private Block bearingBlock;
     private List<Block> connectedOutputs = new ArrayList<>();
 
+    public Block() { }
+
+    public Block(int id) {
+        this.id = id;
+    }
+
     public Vector3 getPosition() {
         return position;
     }
