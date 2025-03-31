@@ -63,3 +63,5 @@ structure.write("guns.structure");
 In the future, the library will be published on Maven Central. In the meantime,
 download the **JAR** file from the release that is convenient for you and connect as
 conveniently as possible.
+
+Requirements: JDK 16+
