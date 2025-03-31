@@ -25,6 +25,7 @@ public final class Block {
     private int[] additionalInts;
     private BlockMetadata metadata;
     private Color color;
+    private Block bearingBlock;
     private List<Block> connectedOutputs = new ArrayList<>();
 
     public int rotationId, colorId;
@@ -61,12 +62,12 @@ public final class Block {
         this.value = value;
     }
 
-    public int getBearingBlockId() {
-        return bearingBlockId;
+    public Block getBearingBlock() {
+        return bearingBlock;
     }
 
-    public void setBearingBlockId(int bearingBlockId) {
-        this.bearingBlockId = bearingBlockId;
+    public void setBearingBlock(Block bearingBlock) {
+        this.bearingBlock = bearingBlock;
     }
 
     public List<Block> getConnectedOutputs() {
@@ -77,16 +78,20 @@ public final class Block {
         connectedOutputs.add(output);
     }
 
+    public void connectInput(Block input) {
+        input.connectOutput(this);
+    }
+
     private void throwBlockNotFound(int id) throws IOException {
         throw new IOException("Block with id " + id + " not found");
     }
 
-    public void setupConnectedOutputs(Structure struct) throws IOException {
+    public void postBlocksRead(Structure struct) throws IOException {
         connectedOutputs.clear();
 
         if(connectedOutputsIds != null) {
             for (int id : connectedOutputsIds) {
-                Block block = struct.getBlock(id);
+                Block block = struct.getBlockById(id);
 
                 if (block == null)
                     throwBlockNotFound(id);
@@ -94,6 +99,15 @@ public final class Block {
                 connectedOutputs.add(block);
             }
         }
+
+        if(bearingBlockId != -1) {
+            Block block = struct.getBlockById(bearingBlockId);
+
+            if (block == null)
+                throwBlockNotFound(bearingBlockId);
+
+            bearingBlock = block;
+        } else bearingBlock = null;
     }
 
     public void setConnectedOutputs(List<Block> connectedOutputs) {
@@ -177,13 +191,15 @@ public final class Block {
             value = in.read() / 255f;
 
             if(!bools[4])
-                bearingBlockId = in.readShort() & 0xFFFF;
+                bearingBlockId = in.readUnsignedShort();
+            else
+                bearingBlockId = -1;
 
             if(bools[1]) {
                 connectedOutputsIds = new int[in.read()];
 
                 for (int i = 0; i < connectedOutputsIds.length; i++)
-                    connectedOutputsIds[i] = in.readShort() & 0xFFFF;
+                    connectedOutputsIds[i] = in.readUnsignedShort();
             }
 
             if (!bools[5])
@@ -228,7 +244,7 @@ public final class Block {
                 connectedOutputs != null && !connectedOutputs.isEmpty(),
                 metadata == null,
                 color == null,
-                bearingBlockId == -1,
+                bearingBlock == null,
                 additionalInts == null || additionalInts.length == 0,
                 speed > 1,
                 speed != 0
@@ -247,8 +263,14 @@ public final class Block {
 
             out.write((int) (value * 255));
 
-            if(!bools[4])
-                out.writeShort((short) bearingBlockId);
+            if(!bools[4]) {
+                int id = struct.getBlockId(bearingBlock);
+
+                if(id == -1)
+                    throw new IOException("Unlisted bearing block");
+
+                out.writeShort((short) id);
+            }
 
             if(bools[1]) {
                 out.write(connectedOutputs.size());
