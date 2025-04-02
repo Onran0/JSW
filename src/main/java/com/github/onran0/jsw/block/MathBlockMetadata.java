@@ -10,14 +10,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class MathBlockMetadata implements ISerializable {
-    public String formula;
-    public final Map<Integer, Integer> connectionsSlots = new HashMap<>();
+    private StringBuilder formula = new StringBuilder();
+    private final Map<Integer, Integer> connectionsSlots = new HashMap<>();
+
+    public Map<Integer, Integer> getConnectionsSlots() {
+        return connectionsSlots;
+    }
+
+    public StringBuilder getFormula() {
+        return formula;
+    }
+
+    public void setFormula(StringBuilder formula) {
+        if (formula == null)
+            throw new NullPointerException("Argument formula is null");
+
+        this.formula = formula;
+    }
+
+    public void setFormula(CharSequence formula) {
+        this.formula = new StringBuilder(formula);
+    }
+
+    public void appendFormula(Object x) {
+        this.formula.append(x);
+    }
 
     @Override
     public void read(LittleEndianDataInputStream in, int version) throws IOException {
-        connectionsSlots.clear();
+        getConnectionsSlots().clear();
 
-        formula = StringUtils.readASCII(in, in.readUnsignedShort());
+        setFormula(new StringBuilder(StringUtils.readASCII(in, in.readUnsignedShort())));
 
         int size = in.read();
 
@@ -32,33 +55,31 @@ public final class MathBlockMetadata implements ISerializable {
         in.read(value);
 
         for (int i = 0; i < size; i++)
-            connectionsSlots.put(key[i] & 0xFF, value[i] & 0xFF);
+            getConnectionsSlots().put(key[i] & 0xFF, value[i] & 0xFF);
 
         for(int i = 0;i < 256;i++) {
-            if(!connectionsSlots.containsKey(i))
-                connectionsSlots.put(i, i);
+            if(!getConnectionsSlots().containsKey(i))
+                getConnectionsSlots().put(i, i);
         }
     }
 
     @Override
     public void write(LittleEndianDataOutputStream out, int version) throws IOException {
-        if(!StringUtils.isASCIIString(formula))
+        if(!StringUtils.isASCIIString(getFormula().toString()))
             throw new IOException("Invalid math block formula charset");
 
-        formula = formula == null ? "" : formula;
+        out.writeShort((short) getFormula().length());
 
-        out.writeShort((short) formula.length());
+        StringUtils.writeASCII(out, getFormula().toString());
 
-        StringUtils.writeASCII(out, formula);
+        out.write(getConnectionsSlots().size());
 
-        out.write(connectionsSlots.size());
-
-        for (Integer connectionId : connectionsSlots.keySet())
+        for (Integer connectionId : getConnectionsSlots().keySet())
             out.write(connectionId);
 
-        out.write(connectionsSlots.size());
+        out.write(getConnectionsSlots().size());
 
-        for (Integer slot : connectionsSlots.values())
+        for (Integer slot : getConnectionsSlots().values())
             out.write(slot);
     }
 }
