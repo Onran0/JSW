@@ -15,13 +15,7 @@ public final class StringUtils {
     private static final CharsetDecoder DECODER = StandardCharsets.US_ASCII.newDecoder();
 
     public static boolean isASCIIString(String str) {
-        if(str.isEmpty()) return false;
-
-        for(char c : str.toCharArray()) {
-            if(ASCII.indexOf(c) == -1) return false;
-        }
-
-        return true;
+        return ENCODER.canEncode(str);
     }
 
     public static void writeASCII(OutputStream out, String ascii) throws IOException {

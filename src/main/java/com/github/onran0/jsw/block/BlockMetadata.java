@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class BlockMetadata implements ISerializable {
-    private boolean[] ticks;
-    private float[] sliders;
-    private int[][] groups;
-    private int[] dropFields;
+    private boolean[] ticks = new boolean[0];
+    private float[] sliders = new float[0];
+    private int[][] groups = new int[0][];
+    private int[] dropFields = new int[0];
     private List<Color> colors = new ArrayList<>();
     private List<Gradient> gradients = new ArrayList<>();
     private List<Vector3> vectors = new ArrayList<>();

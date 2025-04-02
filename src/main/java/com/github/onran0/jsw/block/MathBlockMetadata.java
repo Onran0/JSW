@@ -65,12 +65,15 @@ public final class MathBlockMetadata implements ISerializable {
 
     @Override
     public void write(LittleEndianDataOutputStream out, int version) throws IOException {
-        if(!StringUtils.isASCIIString(getFormula().toString()))
+        String str = getFormula().toString();
+
+        if(!StringUtils.isASCIIString(str))
             throw new IOException("Invalid math block formula charset");
 
-        out.writeShort((short) getFormula().length());
+        if(str.length() > 0xFFFF)
+            throw new IOException("Invalid math block formula length");
 
-        StringUtils.writeASCII(out, getFormula().toString());
+        StringUtils.writeASCII(out, str);
 
         out.write(getConnectionsSlots().size());
 
