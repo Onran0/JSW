@@ -292,7 +292,7 @@ public final class Block {
                 if (connectedOutputs.size() > 255)
                     throw new IOException("The number of block connections exceeds 255");
 
-                out.write(connectedOutputs.size() - 1);
+                out.write(connectedOutputs.size());
 
                 for(Block block : connectedOutputs) {
                     int id = struct.getBlockId(block);
