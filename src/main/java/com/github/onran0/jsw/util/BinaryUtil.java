@@ -10,6 +10,11 @@ import java.util.function.Supplier;
 
 public final class BinaryUtil {
 
+    private static void checkLength(int current, int max) throws IOException {
+        if (current > max)
+            throw new IOException("Array length exceeds " + max);
+    }
+
     public static int toByte(boolean[] bools) {
         int b = 0;
 
@@ -29,6 +34,8 @@ public final class BinaryUtil {
     }
 
     public static void writePackedBools255(LittleEndianDataOutputStream out, boolean[] bools) throws IOException {
+        checkLength(bools.length, 0xFF);
+
         out.write(bools.length);
 
         int index = 0;
@@ -68,13 +75,17 @@ public final class BinaryUtil {
     }
 
     public static <T extends ISerializable> void writeArray(LittleEndianDataOutputStream out, T[] array, int version) throws IOException {
-        out.writeShort(array.length);
+        checkLength(array.length, 0xFFFF);
+
+        out.writeShort((short) array.length);
 
         for (T value : array)
             value.write(out, version);
     }
 
     public static <T extends ISerializable> void writeArray255(LittleEndianDataOutputStream out, T[] array, int version) throws IOException {
+        checkLength(array.length, 0xFF);
+
         out.write(array.length);
 
         for (T value : array)
@@ -110,7 +121,9 @@ public final class BinaryUtil {
     }
 
     public static void writeArray(LittleEndianDataOutputStream out, float[] array) throws IOException {
-        out.writeShort(array.length);
+        checkLength(array.length, 0xFFFF);
+
+        out.writeShort((short) array.length);
 
         for (float value : array)
             out.writeFloat(value);
@@ -126,6 +139,8 @@ public final class BinaryUtil {
     }
 
     public static void writeArray255(LittleEndianDataOutputStream out, float[] array) throws IOException {
+        checkLength(array.length, 0xFF);
+
         out.write(array.length);
 
         for (float value : array)
@@ -142,6 +157,8 @@ public final class BinaryUtil {
     }
 
     public static void writeArray255(LittleEndianDataOutputStream out, int[] array) throws IOException {
+        checkLength(array.length, 0xFF);
+
         out.write(array.length);
 
         for (int value : array)

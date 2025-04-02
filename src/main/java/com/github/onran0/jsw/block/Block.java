@@ -271,6 +271,8 @@ public final class Block {
         if (interactable || bools[7])
             out.write((int) (speed * (bools[6] ? 1 : 255)));
 
+        // 00111110
+
         if(interactable) {
             if (bools[0])
                 out.writeUTF(name);
@@ -287,7 +289,10 @@ public final class Block {
             }
 
             if(bools[1]) {
-                out.write(connectedOutputs.size());
+                if (connectedOutputs.size() > 255)
+                    throw new IOException("The number of block connections exceeds 255");
+
+                out.write(connectedOutputs.size() - 1);
 
                 for(Block block : connectedOutputs) {
                     int id = struct.getBlockId(block);
