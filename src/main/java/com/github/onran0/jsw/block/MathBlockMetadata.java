@@ -73,6 +73,8 @@ public final class MathBlockMetadata implements ISerializable {
         if(str.length() > 0xFFFF)
             throw new IOException("Invalid math block formula length");
 
+        out.writeShort((short)str.length());
+
         StringUtils.writeASCII(out, str);
 
         out.write(getConnectionsSlots().size());
