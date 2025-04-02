@@ -177,10 +177,10 @@ public final class Block {
         getPosition().setZ(decodePositionComponent(in.readShort(), offset.getZ(), size.getZ()));
 
         if(!struct.getRotationsTable().isEmpty()) {
-            if(struct.getRotationsTable().size() <= 255)
+            if(struct.getRotationsTable().size() <= 256)
                 rotationId = in.read();
             else
-                rotationId = in.readShort() & 0xFFFF;
+                rotationId = in.readUnsignedShort();
 
             getRotation().set(struct.getRotationsTable().get(rotationId));
         } else {
@@ -241,7 +241,7 @@ public final class Block {
         out.writeShort(encodePositionComponent(getPosition().getZ(), offset.getZ(), size.getZ()));
 
         if(!struct.getRotationsTable().isEmpty()) {
-            if(struct.getRotationsTable().size() <= 255)
+            if(struct.getRotationsTable().size() <= 256)
                 out.write(rotationId);
             else
                 out.writeShort((short) rotationId);
