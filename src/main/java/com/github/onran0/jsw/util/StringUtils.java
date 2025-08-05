@@ -10,22 +10,33 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 
 public final class StringUtils {
-    public static final String ASCII = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-    private static final CharsetEncoder ENCODER = StandardCharsets.US_ASCII.newEncoder();
-    private static final CharsetDecoder DECODER = StandardCharsets.US_ASCII.newDecoder();
+    public static final CharsetEncoder ASCII_ENCODER = StandardCharsets.US_ASCII.newEncoder();
+    public static final CharsetDecoder ASCII_DECODER = StandardCharsets.US_ASCII.newDecoder();
+    public static final CharsetEncoder UTF8_ENCODER = StandardCharsets.UTF_8.newEncoder();
+    public static final CharsetDecoder UTF8_DECODER = StandardCharsets.UTF_8.newDecoder();
 
-    public static boolean isASCIIString(String str) {
-        return ENCODER.canEncode(str);
+    public static String fromBytes(CharsetDecoder decoder, final byte[] bytes) throws IOException {
+        CharBuffer charBuffer = decoder.decode(ByteBuffer.wrap(bytes));
+        decoder.reset();
+        return charBuffer.toString();
     }
 
-    public static void writeASCII(OutputStream out, String ascii) throws IOException {
-        out.write(ENCODER.encode(CharBuffer.wrap(ascii)).array());
-        ENCODER.reset();
+    public static byte[] toBytes(CharsetEncoder encoder, final String str) throws IOException {
+        ByteBuffer buffer = encoder.encode(CharBuffer.wrap(str));
+        byte[] bytes = new byte[buffer.remaining()];
+        buffer.get(bytes);
+        encoder.reset();
+        return bytes;
     }
 
-    public static String readASCII(InputStream in, int len) throws IOException {
-        String str = new String(DECODER.decode(ByteBuffer.wrap(in.readNBytes(len))).array());
-        DECODER.reset();
+    public static String readString(CharsetDecoder decoder, InputStream in, int len) throws IOException {
+        String str = new String(decoder.decode(ByteBuffer.wrap(in.readNBytes(len))).array());
+        decoder.reset();
         return str;
+    }
+
+    public static void writeString(CharsetEncoder encoder, OutputStream out, String str) throws IOException {
+        out.write(encoder.encode(CharBuffer.wrap(str)).array());
+        encoder.reset();
     }
 }

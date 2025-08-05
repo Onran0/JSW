@@ -40,7 +40,7 @@ public final class MathBlockMetadata implements ISerializable {
     public void read(LittleEndianDataInputStream in, int version) throws IOException {
         getConnectionsSlots().clear();
 
-        setFormula(new StringBuilder(StringUtils.readASCII(in, in.readUnsignedShort())));
+        setFormula(new StringBuilder(StringUtils.readString(StringUtils.ASCII_DECODER, in, in.readUnsignedShort())));
 
         int size = in.read();
 
@@ -67,7 +67,7 @@ public final class MathBlockMetadata implements ISerializable {
     public void write(LittleEndianDataOutputStream out, int version) throws IOException {
         String str = getFormula().toString();
 
-        if(!StringUtils.isASCIIString(str))
+        if(!StringUtils.ASCII_ENCODER.canEncode(str))
             throw new IOException("Invalid math block formula charset");
 
         if(str.length() > 0xFFFF)
@@ -75,7 +75,7 @@ public final class MathBlockMetadata implements ISerializable {
 
         out.writeShort((short)str.length());
 
-        StringUtils.writeASCII(out, str);
+        StringUtils.writeString(StringUtils.ASCII_ENCODER, out, str);
 
         out.write(getConnectionsSlots().size());
 

@@ -190,7 +190,6 @@ public final class Blocks {
                 WOOD_BLOCK,
                 TABLE,
 
-                WHEEL,
                 SUBMARINE_PROPELLER,
                 SMALL_WHEEL,
                 PONTOON,
@@ -227,7 +226,6 @@ public final class Blocks {
                 WOOD_HALF_BLOCK_5,
                 WOOD_HALF_BLOCK_6,
 
-                MEDIUM_WHEEL,
                 VERY_SMALL_WHEEL,
                 STICKER,
                 BALLAST,
