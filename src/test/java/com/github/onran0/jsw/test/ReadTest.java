@@ -14,12 +14,12 @@ public class ReadTest {
 
     @Test
     public void main() throws Exception {
-        Structure structure = new Structure(new FileInputStream("TEST.structure"));
+        Structure structure = new Structure(new FileInputStream("a.structure"));
 
         for (Root root : structure.getRoots()) {
             for (Block block : root.getBlocks()) {
-                if(block.getId() == Blocks.MATH_BLOCK) {
-                    System.out.println( ((MathBlockMetadata)block.getMetadata().getCustomMetadata()).formula );
+                if(block.getId() == Blocks.FILTER) {
+                    System.out.println(block.getName());
                 }
             }
         }

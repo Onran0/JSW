@@ -2,6 +2,7 @@ package com.github.onran0.jsw.block;
 
 import com.github.onran0.jsw.Color;
 import com.github.onran0.jsw.Structure;
+import com.github.onran0.jsw.io.NETCompatibleIO;
 import com.github.onran0.jsw.math.Vector3;
 import com.github.onran0.jsw.util.BinaryUtil;
 import com.github.onran0.jsw.util.StringUtils;
@@ -58,7 +59,7 @@ public final class Block {
     }
 
     public void setName(String name) {
-        //this.name = name;
+        this.name = name;
     }
 
     public float getSpeed() {
@@ -200,12 +201,8 @@ public final class Block {
             speed = in.read() / (bools[6] ? 1f : 255f);
 
         if(interactable) {
-            if (bools[0]) {
-                int h = in.readUnsignedByte();
-                int l = in.readUnsignedByte();
-
-                name = StringUtils.readString(StringUtils.UTF8_DECODER, in, (h << 8) | l);
-            }
+            if (bools[0])
+                name = NETCompatibleIO.readString(in);
 
             value = in.read() / 255f;
 
@@ -277,14 +274,8 @@ public final class Block {
             out.write((int) (speed * (bools[6] ? 1 : 255)));
 
         if(interactable) {
-            if (bools[0]) {
-                byte[] bytes = StringUtils.toBytes(StringUtils.UTF8_ENCODER, name);
-
-                out.write(bytes.length >> 8);
-                out.write(bytes.length & 0xFF);
-
-                out.write(bytes);
-            }
+            if (bools[0])
+                NETCompatibleIO.writeString(name, out);
 
             out.write((int) (value * 255));
 

@@ -14,30 +14,11 @@ public class WriteTest {
 
         Root root = new Root();
 
-        Block in = new Block();
+        Block b = new Block(Blocks.FILTER);
 
-        in.setId(Blocks.AND);
-        in.getPosition().setY(in.getPosition().getY() + 1);
+        b.setName("мяу");
 
-        for(int i = 0;i < 150;i++) {
-            Block block = new Block();
-
-            block.setId(Blocks.HEAVY_GUN);
-
-            in.connectOutput(block);
-
-            root.getBlocks().add(block);
-        }
-
-        root.getBlocks().add(in);
-
-        Block t = new Block();
-
-        t.setId(Blocks.MONITOR);
-
-        t.getPosition().setY(t.getPosition().getY() + 2);
-
-        root.getBlocks().add(t);
+        root.getBlocks().add(b);
 
         structure.getRoots().add(root);
 
