@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class BlockMetadata implements ISerializable {
+    private final int id;
+
     private boolean[] ticks = new boolean[0];
     private float[] sliders = new float[0];
     private int[][] groups = new int[0][];
@@ -24,6 +26,10 @@ public class BlockMetadata implements ISerializable {
     private List<Gradient> gradients = new ArrayList<>();
     private List<Vector3> vectors = new ArrayList<>();
     private ISerializable customMetadata;
+
+    public BlockMetadata(final int id) {
+        this.id = id;
+    }
 
     public int[][] getGroups() {
         return groups;
@@ -81,16 +87,6 @@ public class BlockMetadata implements ISerializable {
         this.vectors = vectors;
     }
 
-    @Override
-    public void read(LittleEndianDataInputStream in, int version) throws IOException {
-        read(in, 0, version);
-    }
-
-    @Override
-    public void write(LittleEndianDataOutputStream out, int version) throws IOException {
-        write(out, 0, version);
-    }
-
     private int encodeComponent(float comp, float minComp, float maxComp) {
         return (short) ( (comp - minComp) / (maxComp - minComp) * (Short.MAX_VALUE & 0xFFFF) ) & 0xFFFF;
     }
@@ -99,7 +95,8 @@ public class BlockMetadata implements ISerializable {
         return (float) comp / (Short.MAX_VALUE & 0xFFFF) * (maxComp - minComp) + minComp;
     }
 
-    public void read(LittleEndianDataInputStream in, int id, int version) throws IOException {
+    @Override
+    public void read(LittleEndianDataInputStream in, int version) throws IOException {
 
         ticks = BinaryUtil.readPackedBools255(in);
         sliders = BinaryUtil.readFloatArray255(in);
@@ -169,7 +166,8 @@ public class BlockMetadata implements ISerializable {
         }
     }
 
-    public void write(LittleEndianDataOutputStream out, int id, int version) throws IOException {
+    @Override
+    public void write(LittleEndianDataOutputStream out, int version) throws IOException {
         BinaryUtil.writePackedBools255(out, ticks);
         BinaryUtil.writeArray255(out, sliders);
 
@@ -247,11 +245,27 @@ public class BlockMetadata implements ISerializable {
             customMetadata.write(out, version);
     }
 
+    public <T extends ISerializable> T getCustomMetadataGeneric() {
+        return (T) getCustomMetadata();
+    }
+
     public ISerializable getCustomMetadata() {
         return customMetadata;
     }
 
     public void setCustomMetadata(ISerializable customMetadata) {
         this.customMetadata = customMetadata;
+    }
+
+    public ISerializable createCustomMetadata() {
+        final ISerializable customMetadata = Blocks.V0.getBlockCustomMetadata(id).get();
+
+        this.setCustomMetadata(customMetadata);
+
+        return customMetadata;
+    }
+
+    public <T extends ISerializable> T createCustomMetadataGeneric() {
+        return (T) createCustomMetadata();
     }
 }

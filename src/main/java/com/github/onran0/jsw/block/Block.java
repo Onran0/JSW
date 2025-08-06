@@ -3,6 +3,7 @@ package com.github.onran0.jsw.block;
 import com.github.onran0.jsw.Color;
 import com.github.onran0.jsw.Structure;
 import com.github.onran0.jsw.block.meta.BlockMetadata;
+import com.github.onran0.jsw.io.ISerializable;
 import com.github.onran0.jsw.io.NETCompatibleIO;
 import com.github.onran0.jsw.math.Vector3;
 import com.github.onran0.jsw.util.BinaryUtil;
@@ -160,6 +161,38 @@ public final class Block {
         this.metadata = metadata;
     }
 
+    public BlockMetadata createMetadata() {
+        final BlockMetadata metadata = new BlockMetadata(this.id);
+
+        this.setMetadata(metadata);
+
+        return metadata;
+    }
+
+    public BlockMetadata createOrGetMetadata() {
+        return this.metadata != null ? this.metadata : createMetadata();
+    }
+
+    public void setCustomMetadata(ISerializable customMetadata) {
+        createOrGetMetadata().setCustomMetadata(customMetadata);
+    }
+
+    public <T extends ISerializable> T getCustomMetadataGeneric() {
+        return this.metadata.getCustomMetadataGeneric();
+    }
+
+    public ISerializable getCustomMetadata() {
+        return this.metadata.getCustomMetadata();
+    }
+
+    public ISerializable createCustomMetadata() {
+        return createOrGetMetadata().createCustomMetadata();
+    }
+
+    public <T extends ISerializable> T createCustomMetadataGeneric() {
+        return createOrGetMetadata().createCustomMetadataGeneric();
+    }
+
     private short encodePositionComponent(float f, float offset, float size)
     {
         return (short) ((f - offset) * size);
@@ -222,7 +255,7 @@ public final class Block {
                 additionalInts = BinaryUtil.readIntArray255(in);
 
             if (!bools[2])
-                (metadata = new BlockMetadata()).read(in, id, version);
+                (metadata = new BlockMetadata(id)).read(in, version);
         }
 
         if (!bools[3]) {
@@ -308,7 +341,7 @@ public final class Block {
                 BinaryUtil.writeArray255(out, additionalInts);
 
             if(!bools[2])
-                metadata.write(out, id, version);
+                metadata.write(out, version);
         }
 
         if(!bools[3]) {
