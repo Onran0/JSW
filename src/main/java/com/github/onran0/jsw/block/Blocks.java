@@ -1,6 +1,9 @@
 package com.github.onran0.jsw.block;
 
+import com.github.onran0.jsw.block.meta.BlockInfo;
+import com.github.onran0.jsw.block.meta.MathBlockMetadata;
 import com.github.onran0.jsw.io.ISerializable;
+import com.github.onran0.jsw.weapon.WeaponInfo;
 
 import java.util.*;
 import java.util.function.Function;
@@ -161,6 +164,18 @@ public final class Blocks {
 
         return isInteractableMap.get(version).apply(id);
     }
+
+    // TODO
+
+    public static BlockInfo getParameters(int id) {
+        return null;
+    }
+
+    public static WeaponInfo getWeaponInfo(int id) {
+        return null;
+    }
+
+    //
 
     public static Supplier<ISerializable> getBlockCustomMetadata(int id, int version) {
         checkVersion(version);

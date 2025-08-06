@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 
 import com.github.onran0.jsw.block.Block;
 import com.github.onran0.jsw.block.Blocks;
-import com.github.onran0.jsw.block.MathBlockMetadata;
 import com.github.onran0.jsw.block.Root;
 import org.junit.Test;
 

@@ -2,10 +2,10 @@ package com.github.onran0.jsw.block;
 
 import com.github.onran0.jsw.Color;
 import com.github.onran0.jsw.Structure;
+import com.github.onran0.jsw.block.meta.BlockMetadata;
 import com.github.onran0.jsw.io.NETCompatibleIO;
 import com.github.onran0.jsw.math.Vector3;
 import com.github.onran0.jsw.util.BinaryUtil;
-import com.github.onran0.jsw.util.StringUtils;
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
 

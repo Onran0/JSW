@@ -1,4 +1,4 @@
-package com.github.onran0.jsw.block;
+package com.github.onran0.jsw.block.meta;
 
 import com.github.onran0.jsw.io.ISerializable;
 import com.github.onran0.jsw.util.StringUtils;
